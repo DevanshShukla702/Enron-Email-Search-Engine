@@ -132,7 +132,7 @@ export const EvaluationPage: React.FC = () => {
           <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
             <span className="font-bold text-slate-800 block mb-1">Why BM25 Leads Across Metrics on Enron:</span>
             <p className="leading-relaxed text-slate-600 text-[11px]">
-              Corporate correspondence heavily features domain-specific acronyms (e.g., <code className="bg-white px-1 rounded">CAISO</code>, <code className="bg-white px-1 rounded">FERC</code>, <code className="bg-white px-1 rounded">ADS</code>), executive names (<code className="bg-white px-1 rounded">Skilling</code>, <code className="bg-white px-1 rounded">Lay</code>), and contract identifiers. BM25’s non-linear term frequency saturation ($k_1=1.5$) and document length normalization ($b=0.75$) prioritize exact token occurrences while preventing lengthy reply chains from dominating.
+              Corporate correspondence heavily features domain-specific acronyms (e.g., <code className="bg-white px-1 rounded">CAISO</code>, <code className="bg-white px-1 rounded">FERC</code>, <code className="bg-white px-1 rounded">ADS</code>), executive names (<code className="bg-white px-1 rounded">Skilling</code>, <code className="bg-white px-1 rounded">Lay</code>), and contract identifiers. BM25’s non-linear term frequency saturation (k1=1.5) and document length normalization (b=0.75) prioritize exact token occurrences while preventing lengthy reply chains from dominating.
             </p>
           </div>
 
@@ -146,14 +146,14 @@ export const EvaluationPage: React.FC = () => {
           <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
             <span className="font-bold text-slate-800 block mb-1">Hybrid RRF Complementarity:</span>
             <p className="leading-relaxed text-slate-600 text-[11px]">
-              Reciprocal Rank Fusion (<code className="bg-white px-1 rounded">k=60</code>) fuses ordinal ranks ($RRF(d) = \sum 1/(60 + \text{rank}_m)$) without requiring uncalibrated score normalization between BM25 (unbounded log-odds) and Dense/TF-IDF (cosine). It produces a resilient top-10 ranking that bridges lexical and conceptual matches.
+              Reciprocal Rank Fusion (<code className="bg-white px-1 rounded">k=60</code>) fuses ordinal ranks (RRF(d) = Σ 1 / (60 + rank_m)) without requiring uncalibrated score normalization between BM25 (unbounded log-odds) and Dense/TF-IDF (cosine). It produces a resilient top-10 ranking that bridges lexical and conceptual matches.
             </p>
           </div>
 
           <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
             <span className="font-bold text-slate-800 block mb-1">Relevance Grading Scheme:</span>
             <p className="leading-relaxed text-slate-600 text-[11px]">
-              Evaluated using 3-level graded relevance (0 = Not Relevant, 1 = Partially Relevant, 2 = Highly Relevant). Precision@10, Recall, and MAP apply binary threshold ($\ge 1$). nDCG@10 weights graded relevance via $(2^{\text{rel}} - 1) / \log_2(i + 1)$ with ideal discounted cumulative gain.
+              Evaluated using 3-level graded relevance (0 = Not Relevant, 1 = Partially Relevant, 2 = Highly Relevant). Precision@10, Recall, and MAP apply binary threshold (rel ≥ 1). nDCG@10 weights graded relevance via (2^rel - 1) / log2(i + 1) with ideal discounted cumulative gain.
             </p>
           </div>
         </div>
