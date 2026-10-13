@@ -1,0 +1,18 @@
+# Normalize line endings to LF on checkout
+* text=auto eol=lf
+
+# Explicitly keep Windows scripts as CRLF
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.faiss binary
+*.pkl binary
+*.npy binary
+*.npz binary

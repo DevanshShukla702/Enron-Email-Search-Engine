@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-09-28T17:28:08.646714",
+  "corpus_size": 10000,
+  "dataset_mode": "demo",
+  "query_count": 12,
+  "qrels_count": 67,
+  "dense_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "bm25_params": {
+    "k1": 1.5,
+    "b": 0.75
+  },
+  "rrf_k": 60,
+  "software_versions": {
+    "python": "3.11.9",
+    "scikit_learn": "1.8.0",
+    "sentence_transformers": "6.1.0"
+  }
+}

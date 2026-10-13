@@ -1,0 +1,58 @@
+{
+  "dataset_mode": "demo",
+  "total_files_scanned": 16123,
+  "successfully_parsed": 10000,
+  "failed_emails": 0,
+  "unique_senders": 921,
+  "unique_recipients": 5337,
+  "unique_mailboxes": 5,
+  "date_range": {
+    "start": "1979-12-31T16:00:00-08:00",
+    "end": "2004-02-03T18:17:46-08:00"
+  },
+  "average_body_length_chars": 1726.31,
+  "empty_body_count": 0,
+  "subject_coverage_pct": 98.76,
+  "top_senders": {
+    "michelle.cash@enron.com": 1749,
+    "lynn.blair@enron.com": 1158,
+    "outlook.team@enron.com": 1046,
+    "shelley.corman@enron.com": 613,
+    "no.address@enron.com": 212,
+    "robert.badeer@enron.com": 193,
+    "enron.announcements@enron.com": 118,
+    "40enron@enron.com": 117,
+    "ricki.winters@enron.com": 89,
+    "john.buchanan@enron.com": 86,
+    "twanda.sweet@enron.com": 80,
+    "sylvia.hu@enron.com": 68,
+    "info@pmaconference.com": 65,
+    "crcommunications@caiso.com": 57,
+    "bwoertz@caiso.com": 57
+  },
+  "folder_distribution": {
+    "sent_items": 2074,
+    "deleted_items": 1804,
+    "all_documents": 1132,
+    "meetings": 1120,
+    "inbox": 982,
+    "sent": 590,
+    "inbox/archives": 448,
+    "discussion_threads": 374,
+    "notes_inbox": 247,
+    "inbox/archives/old_messages": 156,
+    "calendar": 102,
+    "_sent_mail": 100,
+    "california": 70,
+    "customer___oneok": 43,
+    "inbox/dlr": 42
+  },
+  "mailbox_distribution": {
+    "blair-l": 3415,
+    "cash-m": 2969,
+    "corman-s": 1972,
+    "badeer-r": 877,
+    "benson-r": 767
+  },
+  "ingested_at": "2026-09-28T11:32:20.093847"
+}
