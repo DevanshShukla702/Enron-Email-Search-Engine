@@ -25,22 +25,19 @@ export const App: React.FC = () => {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Project Brand & Subtitle */}
+            {/* Professional Brand & Descriptor */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-sm font-black text-lg">
-                IR
+              <div className="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shadow-xs">
+                <Search className="w-4 h-4 text-sky-400" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-base text-slate-900 tracking-tight">
+                  <span className="font-bold text-base text-slate-900 tracking-tight">
                     Enterprise Email Retrieval
-                  </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                    Project 16
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-500 font-medium">
-                  TF-IDF · BM25 · Dense Semantic Retrieval · Hybrid RRF
+                  Search, discover, and analyze enterprise correspondence
                 </div>
               </div>
             </div>
@@ -105,7 +102,7 @@ export const App: React.FC = () => {
                   }`}
                 ></span>
                 <span>
-                  {health ? `${health.indexed_documents.toLocaleString()} emails indexed` : 'Connecting...'}
+                  {health ? `${health.indexed_documents.toLocaleString()} emails indexed (Enron corpus subset)` : 'Connecting...'}
                 </span>
               </div>
             </div>
@@ -125,7 +122,7 @@ export const App: React.FC = () => {
       <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
-            <strong>Enron Email Information Retrieval System</strong> · Academic IR Project 16
+            <span className="font-semibold text-slate-700">Enterprise Email Retrieval</span> · Historical Enron Corpus Archive
           </div>
           <div className="text-slate-400">
             Powered by scikit-learn · rank_bm25 · sentence-transformers · FAISS · FastAPI · React

@@ -7,12 +7,12 @@ export const AboutPage: React.FC = () => {
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
-          About the Enterprise Email Information Retrieval Project
+        <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+          About Enterprise Email Retrieval
         </h1>
         <p className="text-xs text-slate-500 mt-1 max-w-3xl leading-relaxed">
-          Information Retrieval Project 16 · Academic implementation and comparative analysis of classical, probabilistic,
-          dense semantic, and hybrid retrieval techniques on the historic Enron Email Corpus.
+          An enterprise information retrieval system implementing and comparing classical (TF-IDF),
+          probabilistic (BM25), dense semantic (MiniLM), and hybrid (RRF) retrieval techniques on the authentic Enron Email collection.
         </p>
       </div>
 
@@ -90,19 +90,30 @@ export const AboutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Dataset & Academic Scope */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3 text-xs text-slate-600 leading-relaxed">
+      {/* Dataset & Scope */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs text-slate-600 leading-relaxed">
         <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
           <BookOpen className="w-4 h-4 text-sky-600" />
-          <span>The Enron Email Dataset & Ethical Notice</span>
+          <span>The Enron Email Dataset & Historical Context</span>
         </h3>
         <p>
-          The Enron corpus is a historical archive of real enterprise correspondence collected by the Federal Energy Regulatory Commission (FERC) during its inquiry into the collapse of Enron Corporation. It was subsequently processed and released to the research community by William Cohen and researchers at Carnegie Mellon University (CMU).
+          The Enron corpus is a historical collection of corporate correspondence made public by the Federal Energy Regulatory Commission (FERC) following its investigation. The collection was subsequently cleaned and organized for the research community by William Cohen and colleagues at Carnegie Mellon University (CMU).
         </p>
-        <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2.5 text-amber-900 text-xs">
-          <ShieldAlert className="w-4 h-4 text-amber-700 mt-0.5 flex-shrink-0" />
-          <div>
-            <strong>Academic Research Use Disclaimer:</strong> The emails indexed in this application represent authentic historical business records. They are presented strictly for academic research, education, and algorithmic comparison in Information Retrieval.
+
+        {/* Technical Scope & Real Limitations */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-slate-100">
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <strong className="text-slate-800 block mb-1">Index & Collection Scope:</strong>
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              This system is currently indexed over a curated 10,000-document demonstration subset representing 5 executive mailboxes. While the complete Enron corpus comprises ~517,000 messages, the 10,000-email subset provides rapid in-memory startup while retaining realistic enterprise search complexity.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <strong className="text-slate-800 block mb-1">Thread Reconstruction Methodology:</strong>
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              Conversation threads are reconstructed using RFC-2822 <code className="bg-white px-1 rounded">In-Reply-To</code> and <code className="bg-white px-1 rounded">References</code> headers, augmented with normalized subject grouping via Disjoint-Set Union (Union-Find). Because legacy corporate emails occasionally omit reply headers, subject grouping provides robust fallback clustering.
+            </p>
           </div>
         </div>
       </div>

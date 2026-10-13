@@ -28,9 +28,14 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between text-xs text-slate-500 pb-2 border-b border-slate-200">
-          <span>Comparative Retrieval for: <strong className="text-slate-800">"{compareResponse.query}"</strong></span>
-          <span>Executed in {compareResponse.execution_time_ms} ms</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 pb-2 border-b border-slate-200 gap-2">
+          <div>
+            <span>Comparative Retrieval for: <strong className="text-slate-800">"{compareResponse.query}"</strong></span>
+            <span className="text-[11px] text-slate-400 block mt-0.5">
+              Notice: Each model computes native scores (BM25 log-odds, TF-IDF/Dense cosine, RRF reciprocal sum). Compare by ranking order, not raw score magnitudes.
+            </span>
+          </div>
+          <span className="flex-shrink-0 text-slate-600 font-medium">All 4 models executed in {compareResponse.execution_time_ms} ms</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

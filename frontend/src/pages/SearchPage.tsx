@@ -75,19 +75,19 @@ export const SearchPage: React.FC = () => {
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
-              Enterprise Email Retrieval Engine
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+              Search enterprise email
             </h1>
             <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
-              Academic Information Retrieval system executing over 10,000 authentic Enron email records across 
-              classical (TF-IDF), probabilistic (BM25), dense semantic (MiniLM), and hybrid (RRF) paradigms.
+              Search email correspondence across 10,000 indexed Enron emails using lexical (TF-IDF), 
+              probabilistic (BM25), dense semantic (MiniLM), or hybrid (RRF) retrieval.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Corpus: 10,000 Emails
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Corpus: 10,000 Emails (Enron Subset)
             </span>
           </div>
         </div>
@@ -104,12 +104,32 @@ export const SearchPage: React.FC = () => {
             isLoading={loading}
           />
 
+          {/* Quick Example Query Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 mb-3 text-xs">
+            <span className="text-[11px] font-medium text-slate-400 mr-1">Example queries:</span>
+            {[
+              'outlook migration',
+              'CAISO automated dispatch system',
+              'contract approval',
+              'meeting schedule',
+              'pipeline capacity'
+            ].map((example) => (
+              <button
+                key={example}
+                type="button"
+                onClick={() => handleSuggestionClick(example)}
+                className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 text-[11px] font-medium transition-colors border border-slate-200/60"
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+
           <RankingSelector
             currentMethod={method}
             onMethodChange={(m) => {
               setMethod(m);
               if (query.trim()) {
-                // Rerun search with new method
                 setTimeout(() => handleSearch(), 50);
               }
             }}

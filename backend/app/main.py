@@ -4,23 +4,44 @@ backend/app/main.py
 FastAPI Application Entrypoint for Enron Email IR System.
 """
 
+import os
 import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.config import settings
-from backend.app.api.search import router as search_router, init_search_engines
-from backend.app.api.evaluation import router as evaluation_router
-from backend.app.api.analytics import router as analytics_router
-from backend.app.api.health import router as health_router
+# ── Suppress noisy third-party loggers before anything else loads ──────────────
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")       # suppress tokenizer fork warning
+os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")       # suppress HF transformers chatter
+os.environ.setdefault("HF_HUB_VERBOSITY", "warning")           # suppress HF Hub unauthenticated banner
+os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")    # suppress HF download progress bars
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     datefmt="%H:%M:%S"
 )
+
+# Silence verbose third-party loggers
+for _noisy in (
+    "httpx",
+    "httpcore",
+    "huggingface_hub",
+    "huggingface_hub.utils._http",
+    "sentence_transformers",
+    "sentence_transformers.base.model",
+    "transformers",
+    "faiss",
+):
+    logging.getLogger(_noisy).setLevel(logging.WARNING)
+
 logger = logging.getLogger("main")
+
+from backend.app.config import settings
+from backend.app.api.search import router as search_router, init_search_engines
+from backend.app.api.evaluation import router as evaluation_router
+from backend.app.api.analytics import router as analytics_router
+from backend.app.api.health import router as health_router
 
 
 @asynccontextmanager
@@ -63,9 +84,9 @@ app.include_router(health_router)
 @app.get("/")
 def root():
     return {
-        "title": "Enterprise Email Search Engine using Enron Corpus",
+        "title": "Enterprise Email Retrieval Engine",
+        "description": "Multi-paradigm Information Retrieval system (TF-IDF, BM25, Dense Sentence Transformers, Hybrid RRF)",
         "version": "1.0.0",
-        "project": "Information Retrieval Project 16",
         "dataset_mode": settings.DATASET_MODE,
         "docs": "/docs",
         "endpoints": {

@@ -72,14 +72,29 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
           </div>
         </div>
 
-        {/* Score Pill */}
+        {/* Score Pill with Model-Specific Label */}
         <div className="flex flex-col items-end flex-shrink-0">
           <span
-            className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${getMethodBadgeColor(
+            title={
+              method === 'bm25'
+                ? 'Okapi BM25 score (unbounded log-odds term saturation)'
+                : method === 'dense'
+                ? 'Cosine similarity of normalized 384-d sentence embeddings'
+                : method === 'tfidf'
+                ? 'Cosine similarity over sublinear TF x IDF sparse vector'
+                : 'Reciprocal Rank Fusion score: sum of 1/(60 + rank_m)'
+            }
+            className={`text-xs font-semibold px-2 py-0.5 rounded-full border cursor-help ${getMethodBadgeColor(
               method
             )}`}
           >
-            Score: {item.score}
+            {method === 'bm25'
+              ? `BM25: ${item.score}`
+              : method === 'tfidf'
+              ? `Cosine: ${item.score}`
+              : method === 'dense'
+              ? `Cosine: ${item.score}`
+              : `RRF: ${item.score}`}
           </span>
           <span className="text-[10px] text-slate-400 mt-0.5">{getMethodName(method)}</span>
         </div>

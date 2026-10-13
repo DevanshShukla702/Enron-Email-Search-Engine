@@ -45,12 +45,12 @@ export const EvaluationPage: React.FC = () => {
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
               Empirical IR Evaluation Dashboard
             </h1>
-            <span className="flex items-center gap-1 text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Verified Empirical Metrics
+            <span className="flex items-center gap-1 text-[11px] font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200">
+              <ShieldCheck className="w-3.5 h-3.5 text-slate-500" />
+              Offline Benchmark (12 Queries · 67 Judgments)
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
@@ -115,21 +115,55 @@ export const EvaluationPage: React.FC = () => {
       {/* Precision-Recall Curves Chart */}
       {prPoints.length > 0 && <PrecisionRecallChart data={prPoints} />}
 
-      {/* Evaluation Run Metadata Box */}
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-xs text-slate-600">
-        <h4 className="font-bold text-slate-800 text-sm mb-2 flex items-center gap-1.5">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          <span>Academic Integrity & Benchmark Metadata</span>
-        </h4>
-        <p className="leading-relaxed mb-3 text-slate-600">
-          In strict compliance with academic standards, no evaluation numbers are simulated or hard-coded.
-          All scores reflect actual execution of the implemented search pipelines against graded judgments in <code className="font-mono bg-white px-1 py-0.5 rounded border">data/evaluation/qrels.tsv</code>.
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white p-3 rounded-lg border border-slate-200">
+      {/* Evaluation Run Metadata & Methodology Section */}
+      <div className="bg-white border border-slate-200 rounded-xl p-5 text-xs text-slate-600 shadow-sm space-y-4">
+        <div>
+          <h4 className="font-bold text-slate-800 text-sm mb-1 flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <span>Benchmark Methodology & Empirical Findings</span>
+          </h4>
+          <p className="leading-relaxed text-slate-500">
+            Computed offline by executing all 12 curated information needs against the 10,000 indexed documents and scoring against graded relevance judgments in <code className="font-mono bg-slate-100 px-1 py-0.5 rounded border border-slate-200">data/evaluation/qrels.tsv</code>.
+          </p>
+        </div>
+
+        {/* Technical Explanations Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
+            <span className="font-bold text-slate-800 block mb-1">Why BM25 Leads Across Metrics on Enron:</span>
+            <p className="leading-relaxed text-slate-600 text-[11px]">
+              Corporate correspondence heavily features domain-specific acronyms (e.g., <code className="bg-white px-1 rounded">CAISO</code>, <code className="bg-white px-1 rounded">FERC</code>, <code className="bg-white px-1 rounded">ADS</code>), executive names (<code className="bg-white px-1 rounded">Skilling</code>, <code className="bg-white px-1 rounded">Lay</code>), and contract identifiers. BM25’s non-linear term frequency saturation ($k_1=1.5$) and document length normalization ($b=0.75$) prioritize exact token occurrences while preventing lengthy reply chains from dominating.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
+            <span className="font-bold text-slate-800 block mb-1">Dense Semantic Retrieval Behavior:</span>
+            <p className="leading-relaxed text-slate-600 text-[11px]">
+              The pre-trained bi-encoder (<code className="bg-white px-1 rounded">all-MiniLM-L6-v2</code>) excels at conceptual paraphrases without exact keyword overlap, but maps specialized corporate acronyms and project codes to out-of-distribution vector representations unless fine-tuned on energy trading archives.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
+            <span className="font-bold text-slate-800 block mb-1">Hybrid RRF Complementarity:</span>
+            <p className="leading-relaxed text-slate-600 text-[11px]">
+              Reciprocal Rank Fusion (<code className="bg-white px-1 rounded">k=60</code>) fuses ordinal ranks ($RRF(d) = \sum 1/(60 + \text{rank}_m)$) without requiring uncalibrated score normalization between BM25 (unbounded log-odds) and Dense/TF-IDF (cosine). It produces a resilient top-10 ranking that bridges lexical and conceptual matches.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80">
+            <span className="font-bold text-slate-800 block mb-1">Relevance Grading Scheme:</span>
+            <p className="leading-relaxed text-slate-600 text-[11px]">
+              Evaluated using 3-level graded relevance (0 = Not Relevant, 1 = Partially Relevant, 2 = Highly Relevant). Precision@10, Recall, and MAP apply binary threshold ($\ge 1$). nDCG@10 weights graded relevance via $(2^{\text{rel}} - 1) / \log_2(i + 1)$ with ideal discounted cumulative gain.
+            </p>
+          </div>
+        </div>
+
+        {/* Configuration Metadata Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 text-[11px]">
           <div><span className="text-slate-400 block text-[10px] uppercase">Dense Model:</span> <strong>{metadata.dense_model || 'all-MiniLM-L6-v2'}</strong></div>
-          <div><span className="text-slate-400 block text-[10px] uppercase">BM25 Params:</span> <strong>k1=1.5, b=0.75</strong></div>
-          <div><span className="text-slate-400 block text-[10px] uppercase">RRF Smoothing Constant:</span> <strong>k = 60</strong></div>
-          <div><span className="text-slate-400 block text-[10px] uppercase">Software Version:</span> <strong>Python 3.11 / scikit-learn 1.8</strong></div>
+          <div><span className="text-slate-400 block text-[10px] uppercase">BM25 Params:</span> <strong>k1 = 1.5, b = 0.75</strong></div>
+          <div><span className="text-slate-400 block text-[10px] uppercase">RRF Smoothing:</span> <strong>k = 60</strong></div>
+          <div><span className="text-slate-400 block text-[10px] uppercase">Index Scale:</span> <strong>10,000 Documents</strong></div>
         </div>
       </div>
     </div>
