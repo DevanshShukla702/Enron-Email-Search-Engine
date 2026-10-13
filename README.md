@@ -1,6 +1,6 @@
-# 📬 Enron Email Search Engine
+# 📬 Enterprise Email Retrieval
 
-> An academic Information Retrieval system built on the **CMU Enron Email Corpus**, implementing and comparing four distinct retrieval paradigms — TF-IDF, BM25, Dense Semantic (Sentence Transformers + FAISS), and Hybrid Reciprocal Rank Fusion (RRF) — served through a FastAPI backend and a React + TypeScript frontend.
+> Search, discover, and analyze enterprise correspondence across lexical, probabilistic, dense semantic, and hybrid retrieval paradigms on the historical Enron email collection.
 
 ---
 
@@ -10,6 +10,7 @@
 - [Architecture](#architecture)
 - [Retrieval Methods](#retrieval-methods)
 - [Evaluation Results](#evaluation-results)
+- [Viva & Technical Defense Guide](#viva--technical-defense-guide)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
@@ -22,14 +23,29 @@
 
 ## Overview
 
-This project is an end-to-end enterprise email search engine designed for the **IR Project (Project 16)**. It ingests the publicly available Enron email dataset, preprocesses and indexes ~517k emails (or a configurable demo subset of 10k), and exposes a full-stack search interface capable of:
+**Enterprise Email Retrieval** is an enterprise-grade search system engineered over the historical Enron email collection. It indexes 10,000 authentic corporate messages in a fast in-memory demonstration configuration (scalable to the full ~517k corpus) and provides a unified search experience across:
 
-- **Keyword-based search** (TF-IDF, BM25)
-- **Semantic / conceptual search** (Dense embeddings via `all-MiniLM-L6-v2`)
-- **Hybrid fusion** (Reciprocal Rank Fusion combining all signals)
-- **Head-to-head retrieval comparison** across all four methods
-- **Evaluation analytics** with Precision@10, Recall, MAP, and nDCG metrics
-- **Email thread exploration** and sender/recipient filtering
+- **Lexical term matching** via sublinear TF-IDF and cosine similarity
+- **Probabilistic relevance ranking** via Okapi BM25 with term saturation and document length normalization
+- **Dense semantic vector search** via Sentence Transformers (`all-MiniLM-L6-v2`) and FAISS `IndexFlatIP`
+- **Hybrid rank fusion** via Reciprocal Rank Fusion (RRF, $k=60$)
+- **Head-to-head model comparison** executing all four paradigms synchronously
+- **Conversation thread reconstruction** using RFC-2822 header references and normalized subject grouping
+- **Offline benchmark evaluation** tracking Precision@10, Recall, MAP, nDCG@10, and 11-point interpolated precision-recall curves
+
+---
+
+## Viva & Technical Defense Guide
+
+A comprehensive, mathematically rigorous viva defense manual is available at:
+👉 **[`docs/VIVA_GUIDE.md`](docs/VIVA_GUIDE.md)**
+
+Covering:
+- Detailed reasons to choose each model with seminal academic citations
+- Step-by-step worked numerical examples for BM25, RRF, MAP, and nDCG
+- Deep-dive into tokenization and query preprocessing
+- Empirical explanation for why BM25 outperforms dense retrieval on specialized enterprise corpora
+- Model failure modes, edge cases, and rapid-fire viva Q&A
 
 ---
 
