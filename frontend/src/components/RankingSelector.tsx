@@ -81,14 +81,15 @@ export const RankingSelector: React.FC<RankingSelectorProps> = ({
 
         <div>
           <button
+            type="button"
             onClick={() => onCompareToggle(!isCompareMode)}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               isCompareMode
-                ? 'bg-indigo-600 text-white shadow-xs ring-2 ring-indigo-300'
+                ? 'bg-indigo-600 text-white shadow-xs ring-2 ring-indigo-400 font-bold'
                 : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200'
             }`}
           >
-            <span>Compare All 4 Models</span>
+            <span>{isCompareMode ? '✓ Comparing All 4 Models' : 'Compare All 4 Models'}</span>
           </button>
         </div>
       </div>

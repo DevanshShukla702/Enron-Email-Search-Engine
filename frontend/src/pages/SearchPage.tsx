@@ -28,31 +28,52 @@ export const SearchPage: React.FC = () => {
   const [activeDocId, setActiveDocId] = useState<string | null>(null);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
 
-  const handleSearch = async (searchQuery: string = query) => {
-    const q = searchQuery.trim();
-    if (!q) return;
+  const handleSearch = async (
+    searchQuery?: string,
+    compareOverride?: boolean,
+    methodOverride?: RankingMethod,
+    topKOverride?: number,
+    filtersOverride?: SearchFilters,
+    threadModeOverride?: boolean
+  ) => {
+    let q = (searchQuery !== undefined ? searchQuery : query).trim();
+    const useCompare = compareOverride !== undefined ? compareOverride : isCompareMode;
+    const currentMethod = methodOverride !== undefined ? methodOverride : method;
+    const currentTopK = topKOverride !== undefined ? topKOverride : topK;
+    const currentFilters = filtersOverride !== undefined ? filtersOverride : filters;
+    const currentThreadMode = threadModeOverride !== undefined ? threadModeOverride : threadMode;
+
+    // If user clicked compare with an empty query, provide a representative query to immediately showcase comparison
+    if (!q) {
+      if (useCompare) {
+        q = 'CAISO automated dispatch system';
+        setQuery(q);
+      } else {
+        return;
+      }
+    }
 
     setLoading(true);
     setError(null);
 
     try {
-      if (isCompareMode) {
+      if (useCompare) {
         const res = await compareAllModels({
           query: q,
           method: 'rrf',
-          top_k: topK,
-          filters,
-          thread_mode: threadMode
+          top_k: currentTopK,
+          filters: currentFilters,
+          thread_mode: currentThreadMode
         });
         setCompareResponse(res);
         setSingleResponse(null);
       } else {
         const res = await searchEmails({
           query: q,
-          method,
-          top_k: topK,
-          filters,
-          thread_mode: threadMode
+          method: currentMethod,
+          top_k: currentTopK,
+          filters: currentFilters,
+          thread_mode: currentThreadMode
         });
         setSingleResponse(res);
         setCompareResponse(null);
@@ -66,7 +87,7 @@ export const SearchPage: React.FC = () => {
 
   const handleSuggestionClick = (suggestedQuery: string) => {
     setQuery(suggestedQuery);
-    handleSearch(suggestedQuery);
+    handleSearch(suggestedQuery, isCompareMode);
   };
 
   return (
@@ -96,11 +117,21 @@ export const SearchPage: React.FC = () => {
           <SearchBar
             query={query}
             onQueryChange={setQuery}
-            onSearch={() => handleSearch()}
+            onSearch={() => handleSearch(query, isCompareMode)}
             topK={topK}
-            onTopKChange={setTopK}
+            onTopKChange={(k) => {
+              setTopK(k);
+              if (query.trim() || compareResponse || singleResponse) {
+                handleSearch(query, isCompareMode, method, k);
+              }
+            }}
             threadMode={threadMode}
-            onThreadModeToggle={setThreadMode}
+            onThreadModeToggle={(tm) => {
+              setThreadMode(tm);
+              if (query.trim() || compareResponse || singleResponse) {
+                handleSearch(query, isCompareMode, method, topK, filters, tm);
+              }
+            }}
             isLoading={loading}
           />
 
@@ -129,23 +160,32 @@ export const SearchPage: React.FC = () => {
             currentMethod={method}
             onMethodChange={(m) => {
               setMethod(m);
-              if (query.trim()) {
-                setTimeout(() => handleSearch(), 50);
+              setIsCompareMode(false);
+              if (query.trim() || compareResponse || singleResponse) {
+                handleSearch(query, false, m);
               }
             }}
             isCompareMode={isCompareMode}
             onCompareToggle={(enabled) => {
               setIsCompareMode(enabled);
-              if (query.trim()) {
-                setTimeout(() => handleSearch(), 50);
-              }
+              handleSearch(query, enabled);
             }}
           />
 
           <FilterPanel
             filters={filters}
-            onChange={(f) => setFilters(f)}
-            onClear={() => setFilters({})}
+            onChange={(f) => {
+              setFilters(f);
+              if (query.trim() || compareResponse || singleResponse) {
+                handleSearch(query, isCompareMode, method, topK, f);
+              }
+            }}
+            onClear={() => {
+              setFilters({});
+              if (query.trim() || compareResponse || singleResponse) {
+                handleSearch(query, isCompareMode, method, topK, {});
+              }
+            }}
             isOpen={isFilterOpen}
             onToggle={() => setIsFilterOpen(!isFilterOpen)}
           />

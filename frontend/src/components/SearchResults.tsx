@@ -76,7 +76,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     );
   }
 
-  if (singleResponse) {
+  if (!isCompareMode && singleResponse) {
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between text-xs text-slate-500 pb-2 border-b border-slate-200">
